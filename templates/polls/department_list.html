@@ -1,0 +1,25 @@
+
+{% extends "polls/base.html" %}
+
+{% block body %}
+   <div>
+    {% block content %}
+    <h2 class="text-primary">Department List</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+        </tr>
+        {% for department in object_list %}
+        <tr>
+            <td>{{ department.name }}</td>
+            <td>{{ department.code }}</td>
+        </tr>
+        {% endfor %}
+        
+    </table>
+    {% endblock %}
+   </div>
+{% endblock %}
+
+
