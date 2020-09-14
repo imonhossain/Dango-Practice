@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 # from .models import School, Subject, ClassInfo, Department, AcademicYear
 from .models import Actor, ActorInfo, Address, Category, CategoryActorCount, City, Country, Customer, CustomerList, Film, FilmActor, FilmCategory, FilmList, FilmText, Inventory, Language, NicerButSlowerFilmList, Payment, Rental, SalesByFilmCategory, SalesByStore, Staff, StaffList, Store
 
@@ -8,6 +9,18 @@ class CityModel(admin.ModelAdmin):
     list_display = ('city', 'country')
     list_filter=[('country', admin.RelatedOnlyFieldListFilter)]
     search_fields = ('city', )
+    list_per_page = 3
+
+class CountryModel(admin.ModelAdmin):
+    list_display = ["country","link_to_city"]
+    def link_to_city(self, obj):
+        url = (
+            reverse("admin:polls_city_changelist")
+            + "?"
+            + urlencode({"country_id": f"{obj.country_id}"})
+        )
+        count = obj.city_set.count()
+        return mark_safe('<a href="%s">City (%s)</a>' % (url,count))
 
 
 
@@ -17,7 +30,7 @@ admin.site.register(Address)
 admin.site.register(Category)
 admin.site.register(CategoryActorCount)
 admin.site.register(City, CityModel)
-admin.site.register(Country)
+admin.site.register(Country, CountryModel)
 admin.site.register(Customer)
 admin.site.register(CustomerList)
 admin.site.register(Film)
@@ -35,12 +48,3 @@ admin.site.register(SalesByStore)
 admin.site.register(Staff)
 admin.site.register(StaffList)
 admin.site.register(Store)
-# Register your models here.
-
-# class SubjectModel(admin.ModelAdmin):
-#     list_display = ('name', 'year', 'code', 'credit', 'marks')
-
-# admin.site.register(Subject, SubjectModel)
-# admin.site.register(ClassInfo)
-# admin.site.register(Department, DepartmentModel)
-# admin.site.register(AcademicYear)
