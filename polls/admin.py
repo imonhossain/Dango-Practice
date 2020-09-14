@@ -7,8 +7,7 @@ from django.utils.http import urlencode
 class CityModel(admin.ModelAdmin):
     list_display = ('city', 'country')
     list_filter=[('country', admin.RelatedOnlyFieldListFilter)]
-
-
+    search_fields = ('city', )
 
 
 
